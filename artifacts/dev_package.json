@@ -1,0 +1,47 @@
+{
+	"id": "E26D411F-BF0C-ED11-B47A-000D3AB2359F",
+	"createdAt": "2022-07-26T08:44:13.100Z",
+	"createdBy": "kristin.eliassen@neptune-software.com",
+	"git": {
+		"targetServers": [],
+		"remote": "https://github.com/neptune-software-marketplace/neptunesoftware-dxp-abb-calculator",
+		"testServers": []
+	},
+	"name": "neptunesoftware-dxp-abb-calculator",
+	"description": null,
+	"ver": "22.7.26.845",
+	"enableCICD": true,
+	"apps": [
+		{
+			"id": "4ACD2C6F-3036-447F-908E-CB4F255583A9",
+			"ver": "22.7.26.1044",
+			"application": "neptbb_calculator",
+			"title": "Calculator",
+			"description": "UTIL"
+		}
+	],
+	"api": [],
+	"odataMock": [],
+	"odataSource": [],
+	"dictionary": [],
+	"jsclass": [],
+	"jsscript_group": [],
+	"theme": [],
+	"pdf": [],
+	"rulesengine": [],
+	"reports": [],
+	"api_authentication": [],
+	"api_group": [],
+	"tile": [],
+	"category": [],
+	"launchpad": [],
+	"certificates": [],
+	"role": [],
+	"systems": [],
+	"doc": [],
+	"wf_notifications": [],
+	"wf_definition": [],
+	"department": [],
+	"script_scheduler": [],
+	"connector": []
+}

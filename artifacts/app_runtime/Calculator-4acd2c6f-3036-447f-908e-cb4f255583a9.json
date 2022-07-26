@@ -1,0 +1,1489 @@
+{
+	"id": "4acd2c6f-3036-447f-908e-cb4f255583a9",
+	"createdAt": "2022-02-04T15:47:53.943Z",
+	"updatedAt": "2022-07-26T08:44:21.273Z",
+	"createdBy": "luuk.wosten@neptune-software.com",
+	"changedBy": "kristin.eliassen@neptune-software.com",
+	"objects": [
+		{
+			"fieldNo": "259c2db7-97ea-45c4-c70b-8efc2009027a",
+			"fieldName": "oToolbar",
+			"fieldParent": 0,
+			"fieldType": "sap.m.Toolbar",
+			"script": "",
+			"request": [],
+			"response": [],
+			"attributes": [
+				{
+					"attribute": "position",
+					"grouping": "Parent",
+					"value": "HeaderToolbar",
+					"script": "",
+					"translation": []
+				}
+			],
+			"data": [
+				{
+					"fieldNo": "51a8ad2e-2064-4948-ac8f-1208454cdd2d",
+					"fieldName": "inputCalculator",
+					"fieldParent": "259c2db7-97ea-45c4-c70b-8efc2009027a",
+					"fieldType": "sap.m.Input",
+					"script": "",
+					"request": [],
+					"response": [],
+					"attributes": [
+						{
+							"attribute": "valueHelpOnly",
+							"grouping": "Properties",
+							"value": "true",
+							"script": "",
+							"translation": []
+						},
+						{
+							"attribute": "showValueHelp",
+							"grouping": "Properties",
+							"value": "true",
+							"script": "",
+							"translation": []
+						},
+						{
+							"attribute": "placeholder",
+							"grouping": "Properties",
+							"value": "Input field",
+							"script": "",
+							"translation": []
+						},
+						{
+							"attribute": "valueHelpRequest",
+							"grouping": "Events",
+							"value": "Anonymous Function",
+							"script": "openCalculator(this);",
+							"translation": []
+						}
+					],
+					"data": []
+				}
+			]
+		},
+		{
+			"fieldNo": 99999,
+			"data": [
+				{
+					"fieldNo": "2d25a968-6458-4b89-d7f2-4f498c2ece2b",
+					"fieldName": "calculatorResources",
+					"fieldParent": 99999,
+					"fieldType": "neptune.folder",
+					"script": "",
+					"request": [],
+					"response": [],
+					"attributes": [],
+					"data": [
+						{
+							"fieldNo": "ce73a563-74cd-4bb3-ea2b-eacea3c6b1a4",
+							"fieldName": "Events",
+							"fieldParent": "2d25a968-6458-4b89-d7f2-4f498c2ece2b",
+							"fieldType": "neptune.Script",
+							"script": [
+								"==OBJECT STRING==",
+								"// Custom Init - Happens only once",
+								"sap.ui.getCore().attachInit(function(data) {",
+								"",
+								"    setTimeout(function() {",
+								"        window.firstdigit = \"\";",
+								"        window.secondDigit = \"\";",
+								"        window.lastEntry = \"\";",
+								"        diaCalc.open();",
+								"    }, 200);",
+								"",
+								"});"
+							],
+							"request": [],
+							"response": [],
+							"attributes": [],
+							"data": []
+						},
+						{
+							"fieldNo": "caba5292-583e-4bc9-ffce-6baa6eac186f",
+							"fieldName": "funcCalculator",
+							"fieldParent": "2d25a968-6458-4b89-d7f2-4f498c2ece2b",
+							"fieldType": "neptune.Script",
+							"script": [
+								"==OBJECT STRING==",
+								"function addInput(operand, digit) {",
+								"    if (operand !== \"0\" && window.lastEntry === \"\") {",
+								"        return;",
+								"    }",
+								"    if (operand == \"=\" && window.secondDigit === \"\") {",
+								"        return;",
+								"    }",
+								"",
+								"",
+								"",
+								"    if (operand !== \"0\") {",
+								"",
+								"        if (window.firstDigit !== \"\") {",
+								"            if (window.firstDigit !== \"\" && window.secondDigit !== \"\" && window.operand !== \"\") {",
+								"                calcResult.setValue(calculateResult());",
+								"                setTimeout(function() {",
+								"                    window.calculatorOperand = operand;",
+								"                    if (window.calculatorOperand !== \"=\") {",
+								"                        calcResult.setValue(calcResult.getValue() + operand);",
+								"                        window.lastEntry = \"operand\";",
+								"                    } else {",
+								"                        window.lastEntry = \"digit\";",
+								"                        window.calculatorOperand = \"\";",
+								"                    }",
+								"",
+								"                }, 100);",
+								"            } else {",
+								"",
+								"                if (window.lastEntry === \"operand\" && window.calculatorOperand !== \"=\") {",
+								"                    calcResult.setValue(calcResult.getValue().slice(0, -1));",
+								"                }",
+								"                window.calculatorOperand = operand;",
+								"                window.lastEntry = \"operand\";",
+								"                calcResult.setValue(calcResult.getValue() + operand);",
+								"            }",
+								"        }",
+								"",
+								"    } else {",
+								"",
+								"        if (digit === \".\") {",
+								"            var value = calcResult.getValue();",
+								"            var tooManyDots = value.indexOf(\".\");",
+								"            if (tooManyDots > -1) {",
+								"                return;",
+								"            }",
+								"        }",
+								"        calcResult.setValue(calcResult.getValue() + digit);",
+								"        if (window.lastEntry === \"operand\" && window.firstDigit !== \"\") {",
+								"            window.secondDigit = digit;",
+								"            window.lastEntry = \"digit\";",
+								"            // alert(window.firstDigit + window.calculatorOperand + window.secondDigit);",
+								"            return;",
+								"        }",
+								"",
+								"        if (window.lastEntry === \"digit\" && window.secondDigit === \"\") {",
+								"            window.firstDigit = window.firstDigit + digit;",
+								"            window.lastEntry = \"digit\";",
+								"            // alert(window.firstDigit + window.calculatorOperand + window.secondDigit);",
+								"            return;",
+								"        }",
+								"        if (window.lastEntry === \"digit\" && window.secondDigit !== \"\") {",
+								"            window.secondDigit = window.secondDigit + digit;",
+								"            window.lastEntry = \"digit\";",
+								"            // alert(window.firstDigit + window.calculatorOperand + window.secondDigit);",
+								"            return;",
+								"        }",
+								"",
+								"        if (window.lastEntry === \"\") {",
+								"            window.firstDigit = digit;",
+								"            window.lastEntry = \"digit\";",
+								"            // alert(window.firstDigit + window.calculatorOperand + window.secondDigit);",
+								"            return;",
+								"        }",
+								"",
+								"    }",
+								"}",
+								"",
+								"function openCalculator(element) {",
+								"    clearAll();",
+								"    window.calculatorSource = element;",
+								"    diaCalc.open();",
+								"",
+								"}",
+								"",
+								"function calculateResult() {",
+								"",
+								"    if (checkdigitFormat() === true) {",
+								"",
+								"        window.secondDigit = parseFloat(window.secondDigit);",
+								"        window.firstDigit = parseFloat(window.firstDigit);",
+								"        var result = 0.0;",
+								"        debugger;",
+								"        switch (window.calculatorOperand) {",
+								"            case \"+\":",
+								"                result = window.firstDigit + window.secondDigit;",
+								"                break;",
+								"            case \"-\":",
+								"                result = window.firstDigit - window.secondDigit;",
+								"                break;",
+								"            case \"*\":",
+								"                result = window.firstDigit * window.secondDigit;",
+								"                break;",
+								"            case \"/\":",
+								"                result = window.firstDigit / window.secondDigit;",
+								"                break;",
+								"",
+								"        }",
+								"        window.firstDigit = result.toString();",
+								"        window.secondDigit = \"\";",
+								"        return result;",
+								"    }",
+								"}",
+								"",
+								"function clearAll() {",
+								"    window.firstDigit = \"\";",
+								"    window.secondDigit = \"\";",
+								"    window.lastEntry = \"\";",
+								"    window.calculatorOperand = \"\";",
+								"    calcResult.setValue();",
+								"}",
+								"",
+								"function checkdigitFormat() {",
+								"",
+								"    if (window.firstDigit.substring(1, 1) === \".\") {",
+								"        window.firstDigit = \"0\" + window.firstDigit;",
+								"    }",
+								"    if (window.firstDigit.substring(window.firstDigit.length, 1) === \".\") {",
+								"        window.firstDigit = window.firstDigit + \"0\";",
+								"    }",
+								"    if (window.secondDigit.substring(1, 1) === \".\") {",
+								"        window.secondDigit = \"0\" + window.secondDigit;",
+								"    }",
+								"    if (window.secondDigit.substring(window.secondDigit.length, 1) === \".\") {",
+								"        window.secondDigit = window.secondDigit + \"0\";",
+								"    }",
+								"",
+								"    return true;",
+								"",
+								"}",
+								"",
+								"",
+								"function backspace() {",
+								"    if (window.lastEntry === \"digit\" && window.secondDigit !== \"\") {",
+								"        calcResult.setValue(calcResult.getValue().slice(0, -1));",
+								"        window.secondDigit = window.secondDigit.slice(0, 1);",
+								"        if (window.secondDigit.length === 0) {",
+								"            window.lastEntry = \"operand\";",
+								"        }",
+								"    }",
+								"    if (window.lastEntry === \"digit\" && window.secondDigit === \"\") {",
+								"        calcResult.setValue(calcResult.getValue().slice(0, -1));",
+								"        window.firstDigit = window.firstDigit.slice(0, 1);",
+								"        if (window.firstDigit.length === 0) {",
+								"            window.lastEntry = \"\";",
+								"        }",
+								"    }",
+								"}"
+							],
+							"request": [],
+							"response": [],
+							"attributes": [],
+							"data": []
+						},
+						{
+							"fieldNo": "d5f9c873-4bf2-4597-f498-eef93cad8b4a",
+							"fieldName": "CssNumpad",
+							"fieldParent": "2d25a968-6458-4b89-d7f2-4f498c2ece2b",
+							"fieldType": "sap.ui.core.HTML",
+							"script": "",
+							"request": [],
+							"response": [],
+							"attributes": [],
+							"data": [
+								{
+									"fieldNo": "13b96ee6-f0c2-4350-830d-ee110ca05631",
+									"fieldName": "oCssNumpad",
+									"fieldParent": "d5f9c873-4bf2-4597-f498-eef93cad8b4a",
+									"fieldType": "neptune.Html",
+									"script": [
+										"==OBJECT STRING==",
+										"<style type=\"text/css\" media=\"all\">",
+										"    #boxNumpadPanel .sapMBtn {",
+										"        height: 4.6rem;",
+										"        padding-left: .1rem;",
+										"        padding-right: .1rem;",
+										"    }",
+										"    #k1 {",
+										"        margin: 5px;",
+										"    }",
+										"    #k2 {",
+										"        margin: 5px;",
+										"    }",
+										"    #k3 {",
+										"        margin: 5px;",
+										"    }",
+										"    #k4 {",
+										"        margin: 5px;",
+										"    }",
+										"    #k5 {",
+										"        margin: 5px;",
+										"    }",
+										"    #k6 {",
+										"        margin: 5px;",
+										"    }",
+										"    #k7 {",
+										"        margin: 5px;",
+										"    }",
+										"    #k8 {",
+										"        margin: 5px;",
+										"    }",
+										"    #k9 {",
+										"        margin: 5px;",
+										"    }",
+										"    #k0 {",
+										"        margin: 5px;",
+										"    }",
+										"    ",
+										"    #kDelete {",
+										"        margin: 5px;",
+										"    }",
+										"    #kDelete-inner {",
+										"        padding-left: 0;",
+										"        padding-right: 0;",
+										"    }",
+										"  #kBackspace {",
+										"        margin: 5px;",
+										"    }",
+										"    #kBackspace {",
+										"        padding-left: 0;",
+										"        padding-right: 0;",
+										"        ",
+										"    } ",
+										"     #kConfirm {",
+										"        margin: 5px;",
+										"    }",
+										"    #kConfirm-inner {",
+										"        padding-left: 0;",
+										"        padding-right: 0;",
+										"        ",
+										"    }",
+										"     #kAdd {",
+										"        margin: 5px;",
+										"    }",
+										"    #kAdd-inner {",
+										"        padding-left: 0;",
+										"        padding-right: 0;",
+										"        ",
+										"    }",
+										"     #kDiv {",
+										"        margin: 5px;",
+										"    }",
+										"    #kDiv-inner {",
+										"        padding-left: 0;",
+										"        padding-right: 0;",
+										"        ",
+										"    }",
+										"     #kDot {",
+										"        margin: 5px;",
+										"    }",
+										"    #kEquals {",
+										"        margin: 5px;",
+										"    }",
+										"    #kEquals {",
+										"        padding-left: 0;",
+										"        padding-right: 0;",
+										"        ",
+										"    }",
+										"     #kSubtract {",
+										"        margin: 5px;",
+										"    }",
+										"    #kSubtract-inner {",
+										"        padding-left: 0;",
+										"        padding-right: 0;",
+										"        ",
+										"    }",
+										"     #kMultiply {",
+										"        margin: 5px;",
+										"    }",
+										"    #kMultiply-inner {",
+										"        padding-left: 0;",
+										"        padding-right: 0;",
+										"        ",
+										"    }",
+										"     #kCancel {",
+										"        margin: 5px;",
+										"    }",
+										"    #kCancel-inner {",
+										"        padding-left: 0;",
+										"        padding-right: 0;",
+										"        ",
+										"    }",
+										"    #boxNumpadPanel .sapMPanelContent {",
+										"        border-bottom: none;",
+										"        background: transparent;",
+										"        padding-bottom: 1.8rem;",
+										"    }",
+										"    #boxNumpad02 {",
+										"        margin-left: -.5rem;",
+										"    }",
+										"    #txtUserName {",
+										"        padding-right: .5rem;",
+										"    }",
+										"    .sapMBtn:focus>.sapMBtnInner.sapMFocusable {",
+										"        outline: none;",
+										"    }",
+										"    .numPad .sapMBtnInner {",
+										"        border-top-left-radius: 3rem;",
+										"        border-top-right-radius: 3rem;",
+										"        border-bottom-right-radius: 3rem;",
+										"        border-bottom-left-radius: 3rem;",
+										"        height: 4.1rem;",
+										"        min-width: 4.1rem;",
+										"        border: none;",
+										"        padding-top: .8rem;",
+										"        font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;",
+										"        font-size: 1.5rem;",
+										"        background: rgba(0, 0, 0, 0.2);",
+										"        color: #fff;",
+										"        text-shadow: none;",
+										"    }",
+										"    #boxNumpadPanel .sapMBtnIcon {",
+										"        color: #ffffff;",
+										"    }",
+										"    #boxNumpadPanel .sapMBtn:hover>.sapMBtnHoverable {",
+										"        background-color: rgba(0, 0, 0, 0.5);",
+										"    }",
+										"    #boxNumpadPanel:not(.sapMBtnDisabled)>.sapMBtnInner.sapMBtnActive {",
+										"        background-color: rgba(0, 0, 0, 0.5);",
+										"    }",
+										"    #boxNumpadPanel .sapMCbBg.sapMCbMarkChecked {",
+										"        background: rgba(0, 0, 0, 0.5);",
+										"    }",
+										"    #boxNumpadPanel .sapMCbBg.sapMCbMarkChecked:before {",
+										"        content: \"\";",
+										"    }",
+										"    #boxNumpadPanel .sapMCbBg {",
+										"        background: #fff;",
+										"        border: none;",
+										"        border-top-left-radius: 1rem;",
+										"        border-top-right-radius: 1rem;",
+										"        border-bottom-right-radius: 1rem;",
+										"        border-bottom-left-radius: 1rem;",
+										"        -webkit-focus-ring-color: none;",
+										"    }",
+										"    #boxNumpadPanel .sapMCb {",
+										"        padding: 0 0 0 1.5rem;",
+										"    }",
+										"    #boxNumpadPanel .sapMCbBgDis {",
+										"        opacity: 1;",
+										"    }",
+										"    .animated {",
+										"        -webkit-animation-duration: .9s;",
+										"        -moz-animation-duration: .9s;",
+										"        -o-animation-duration: .9s;",
+										"        -ms-animation-duration: .9s;",
+										"        animation-duration: .9s;",
+										"        -webkit-animation-fill-mode: both;",
+										"        -moz-animation-fill-mode: both;",
+										"        -o-animation-fill-mode: both;",
+										"        -ms-animation-fill-mode: both;",
+										"        animation-fill-mode: both;",
+										"    }",
+										"    @-webkit-keyframes shake {",
+										"        0%, 100% {",
+										"            -webkit-transform: translateX(0);",
+										"            -moz-transform: translateX(0);",
+										"            -o-transform: translateX(0);",
+										"            -ms-transform: translateX(0);",
+										"        }",
+										"        10%,",
+										"        30%,",
+										"        50%,",
+										"        70%,",
+										"        90% {",
+										"            -webkit-transform: translateX(-20px);",
+										"            -moz-transform: translateX(-20px);",
+										"            -o-transform: translateX(-20px);",
+										"            -ms-transofmr: translateX(-20px);",
+										"        }",
+										"        20%,",
+										"        40%,",
+										"        60%,",
+										"        80% {",
+										"            -webkit-transform: translateX(20px);",
+										"            -moz-transform: translateX(20px);",
+										"            -o-transform: translateX(20px);",
+										"            -ms-transform: translateX(20px);",
+										"        }",
+										"    }",
+										"    @keyframes shake {",
+										"        0%, 100% {",
+										"            transform: translateX(0);",
+										"        }",
+										"        10%,",
+										"        30%,",
+										"        50%,",
+										"        70%,",
+										"        90% {",
+										"            transform: translateX(-20px);",
+										"        }",
+										"        20%,",
+										"        40%,",
+										"        60%,",
+										"        80% {",
+										"            transform: translateX(20px);",
+										"        }",
+										"    }",
+										"    .shake {",
+										"        -webkit-animation-name: shake;",
+										"        -moz-animation-name: shake;",
+										"        -o-animation-name: shake;",
+										"        -ms-animation-name: shake;",
+										"        animation-name: shake;",
+										"    }",
+										"    .hidden {",
+										"        visibility: hidden;",
+										"    }",
+										"    .reduceOpacity {",
+										"        opacity: .3;",
+										"    }",
+										"}",
+										"</style>",
+										""
+									],
+									"request": [],
+									"response": [],
+									"attributes": [],
+									"data": []
+								}
+							]
+						},
+						{
+							"fieldNo": "0534d990-e674-4d29-ea77-ef410cade730",
+							"fieldName": "diaCalc",
+							"fieldParent": "2d25a968-6458-4b89-d7f2-4f498c2ece2b",
+							"fieldType": "sap.m.Dialog",
+							"script": "",
+							"request": [],
+							"response": [],
+							"attributes": [
+								{
+									"attribute": "title",
+									"grouping": "Properties",
+									"value": "Simple calculator",
+									"script": "",
+									"translation": []
+								}
+							],
+							"data": [
+								{
+									"fieldNo": "46fd51d6-4478-4256-a489-66bf29eefa22",
+									"fieldName": "boxNumpadPanel",
+									"fieldParent": "0534d990-e674-4d29-ea77-ef410cade730",
+									"fieldType": "sap.m.Panel",
+									"script": "",
+									"request": [],
+									"response": [],
+									"attributes": [
+										{
+											"attribute": "expanded",
+											"grouping": "Properties",
+											"value": "true",
+											"script": "",
+											"translation": []
+										}
+									],
+									"data": [
+										{
+											"fieldNo": "b45ceeaf-5950-4501-9d78-b0bc5620d9c2",
+											"fieldName": "calcResult",
+											"fieldParent": "46fd51d6-4478-4256-a489-66bf29eefa22",
+											"fieldType": "sap.m.Input",
+											"script": "",
+											"request": [],
+											"response": [],
+											"attributes": [],
+											"data": []
+										},
+										{
+											"fieldNo": "dc68135a-18c0-4bfb-e456-9609fe4b3f18",
+											"fieldName": "row1",
+											"fieldParent": "46fd51d6-4478-4256-a489-66bf29eefa22",
+											"fieldType": "sap.m.HBox",
+											"script": "",
+											"request": [],
+											"response": [],
+											"attributes": [
+												{
+													"attribute": "justifyContent",
+													"grouping": "Properties",
+													"value": "Center",
+													"script": "",
+													"translation": []
+												}
+											],
+											"data": [
+												{
+													"fieldNo": "07483f94-af54-4674-a054-d8f7d5e1b030",
+													"fieldName": "k7",
+													"fieldParent": "dc68135a-18c0-4bfb-e456-9609fe4b3f18",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Emphasized",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "7",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\"7\");",
+															"script": "addInput(\"0\",\"7\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "8a998798-dd6d-46a9-8834-eb796065c6db",
+													"fieldName": "k8",
+													"fieldParent": "dc68135a-18c0-4bfb-e456-9609fe4b3f18",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Emphasized",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "8",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\"8\");",
+															"script": "addInput(\"0\",\"8\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "f97b94e7-0d0c-49c7-f87e-e5b4fe1e7d63",
+													"fieldName": "k9",
+													"fieldParent": "dc68135a-18c0-4bfb-e456-9609fe4b3f18",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Emphasized",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "9",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\"9\");",
+															"script": "addInput(\"0\",\"9\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "10a379d0-65e4-4570-9417-4d02c478be5c",
+													"fieldName": "kDiv",
+													"fieldParent": "dc68135a-18c0-4bfb-e456-9609fe4b3f18",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "/",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"/\",\"0\");",
+															"script": "addInput(\"/\",\"0\");",
+															"translation": []
+														}
+													],
+													"data": []
+												}
+											]
+										},
+										{
+											"fieldNo": "70fb21ec-cfdd-429c-ccf9-5f04d104998a",
+											"fieldName": "row2",
+											"fieldParent": "46fd51d6-4478-4256-a489-66bf29eefa22",
+											"fieldType": "sap.m.HBox",
+											"script": "",
+											"request": [],
+											"response": [],
+											"attributes": [
+												{
+													"attribute": "justifyContent",
+													"grouping": "Properties",
+													"value": "Center",
+													"script": "",
+													"translation": []
+												}
+											],
+											"data": [
+												{
+													"fieldNo": "f9b2e8f0-3547-45d8-9dac-2be3b47e025d",
+													"fieldName": "k4",
+													"fieldParent": "70fb21ec-cfdd-429c-ccf9-5f04d104998a",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Emphasized",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "4",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\"4\");",
+															"script": "addInput(\"0\",\"4\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "0b9f1f44-0c55-49d9-f655-1771050083b3",
+													"fieldName": "k5",
+													"fieldParent": "70fb21ec-cfdd-429c-ccf9-5f04d104998a",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Emphasized",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "5",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\"5\");",
+															"script": "addInput(\"0\",\"5\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "787541c3-1de2-4ee9-cbb1-c99e6d6423eb",
+													"fieldName": "k6",
+													"fieldParent": "70fb21ec-cfdd-429c-ccf9-5f04d104998a",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Emphasized",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "6",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\"6\");",
+															"script": "addInput(\"0\",\"6\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "e88d5f50-2ea9-417f-b258-704128efb35d",
+													"fieldName": "kMultiply",
+													"fieldParent": "70fb21ec-cfdd-429c-ccf9-5f04d104998a",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "X",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"*\",\"0\");",
+															"script": "addInput(\"*\",\"0\");",
+															"translation": []
+														}
+													],
+													"data": []
+												}
+											]
+										},
+										{
+											"fieldNo": "17f7885d-05dc-4272-9896-73e308fee6f9",
+											"fieldName": "row3",
+											"fieldParent": "46fd51d6-4478-4256-a489-66bf29eefa22",
+											"fieldType": "sap.m.HBox",
+											"script": "",
+											"request": [],
+											"response": [],
+											"attributes": [
+												{
+													"attribute": "justifyContent",
+													"grouping": "Properties",
+													"value": "Center",
+													"script": "",
+													"translation": []
+												}
+											],
+											"data": [
+												{
+													"fieldNo": "1e49ef8b-52c0-443f-9630-0f0ae380c03b",
+													"fieldName": "k1",
+													"fieldParent": "17f7885d-05dc-4272-9896-73e308fee6f9",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Emphasized",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "1",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\"1\");",
+															"script": "addInput(\"0\",\"1\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "45edfb51-0410-4124-9eeb-a0d08dd6b4a5",
+													"fieldName": "k2",
+													"fieldParent": "17f7885d-05dc-4272-9896-73e308fee6f9",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Emphasized",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "2",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\"2\");",
+															"script": "addInput(\"0\",\"2\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "5aca31f8-ca61-45a4-af96-219f2d4d29b2",
+													"fieldName": "k3",
+													"fieldParent": "17f7885d-05dc-4272-9896-73e308fee6f9",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Emphasized",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "3",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\"3\");",
+															"script": "addInput(\"0\",\"3\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "67e9c30d-e59b-4938-bf1f-80fa4007333c",
+													"fieldName": "kSubtract",
+													"fieldParent": "17f7885d-05dc-4272-9896-73e308fee6f9",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "-",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"-\",\"0\");",
+															"script": "addInput(\"-\",\"0\");",
+															"translation": []
+														}
+													],
+													"data": []
+												}
+											]
+										},
+										{
+											"fieldNo": "117e8fb3-dab9-462d-84e9-080312459c4e",
+											"fieldName": "oHBox",
+											"fieldParent": "46fd51d6-4478-4256-a489-66bf29eefa22",
+											"fieldType": "sap.m.HBox",
+											"script": "",
+											"request": [],
+											"response": [],
+											"attributes": [
+												{
+													"attribute": "justifyContent",
+													"grouping": "Properties",
+													"value": "Center",
+													"script": "",
+													"translation": []
+												}
+											],
+											"data": [
+												{
+													"fieldNo": "7b462cd0-a219-4376-89d6-3d700b691771",
+													"fieldName": "kEquals",
+													"fieldParent": "117e8fb3-dab9-462d-84e9-080312459c4e",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "=",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"=\",\"0\");",
+															"script": "addInput(\"=\",\"0\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "d3c1473c-bf20-4c06-aca8-3218ed7935ab",
+													"fieldName": "k0",
+													"fieldParent": "117e8fb3-dab9-462d-84e9-080312459c4e",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Emphasized",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "0",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\"0\");",
+															"script": "addInput(\"0\",\"0\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "1ba0d3b3-786c-4006-dea7-fef6466f217f",
+													"fieldName": "kDot",
+													"fieldParent": "117e8fb3-dab9-462d-84e9-080312459c4e",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": ".",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"0\",\".\");",
+															"script": "addInput(\"0\",\".\");",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "5cb5c15b-6e8e-4feb-c2c1-07df22f89b77",
+													"fieldName": "kAdd",
+													"fieldParent": "117e8fb3-dab9-462d-84e9-080312459c4e",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "text",
+															"grouping": "Properties",
+															"value": "+",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "addInput(\"+\",\"0\");",
+															"script": "addInput(\"+\",\"0\");",
+															"translation": []
+														}
+													],
+													"data": []
+												}
+											]
+										},
+										{
+											"fieldNo": "da42a1af-66e0-477b-cf72-17e52144d7cc",
+											"fieldName": "row5",
+											"fieldParent": "46fd51d6-4478-4256-a489-66bf29eefa22",
+											"fieldType": "sap.m.HBox",
+											"script": "",
+											"request": [],
+											"response": [],
+											"attributes": [
+												{
+													"attribute": "justifyContent",
+													"grouping": "Properties",
+													"value": "Center",
+													"script": "",
+													"translation": []
+												}
+											],
+											"data": [
+												{
+													"fieldNo": "05b7256a-24f0-4ae9-c0c3-9140f7d4d38e",
+													"fieldName": "kCancel",
+													"fieldParent": "da42a1af-66e0-477b-cf72-17e52144d7cc",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Default",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "icon",
+															"grouping": "Properties",
+															"value": "sap-icon://sys-cancel-2",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "Anonymous Function",
+															"script": [
+																"==OBJECT STRING==",
+																"clearAll();",
+																"diaCalc.close();"
+															],
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "5b2b8b85-e3d6-4e32-ce02-dd77a385fe53",
+													"fieldName": "kDelete",
+													"fieldParent": "da42a1af-66e0-477b-cf72-17e52144d7cc",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "icon",
+															"grouping": "Properties",
+															"value": "sap-icon://delete",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "clearAll();",
+															"script": "clearAll();",
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "3d073d66-4e27-43a2-9219-c60cbba5a9d4",
+													"fieldName": "kConfirm",
+													"fieldParent": "da42a1af-66e0-477b-cf72-17e52144d7cc",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "type",
+															"grouping": "Properties",
+															"value": "Default",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "icon",
+															"grouping": "Properties",
+															"value": "sap-icon://accept",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "Anonymous Function",
+															"script": [
+																"==OBJECT STRING==",
+																"window.calculatorSource.setValue(calcResult.getValue());",
+																"clearAll();",
+																"diaCalc.close();"
+															],
+															"translation": []
+														}
+													],
+													"data": []
+												},
+												{
+													"fieldNo": "6956e25d-b8d8-4d78-cf7f-74225201ae0f",
+													"fieldName": "kBackspace",
+													"fieldParent": "da42a1af-66e0-477b-cf72-17e52144d7cc",
+													"fieldType": "sap.m.Button",
+													"script": "",
+													"request": [],
+													"response": [],
+													"attributes": [
+														{
+															"attribute": "styleClass",
+															"grouping": "Properties",
+															"value": "numPad",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "icon",
+															"grouping": "Properties",
+															"value": "sap-icon://fa-solid/backspace",
+															"script": "",
+															"translation": []
+														},
+														{
+															"attribute": "press",
+															"grouping": "Events",
+															"value": "Anonymous Function",
+															"script": "backspace();",
+															"translation": []
+														}
+													],
+													"data": []
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"fieldNo": 99998,
+			"data": []
+		}
+	],
+	"ver": "22.7.26.1044",
+	"application": "neptbb_calculator",
+	"title": "Calculator",
+	"description": "UTIL",
+	"enableFileStorage": false,
+	"enableManifest": false,
+	"enableStylesheet": false,
+	"enableObfuscate": false,
+	"onlyRunLaunchpad": false,
+	"disabled": false,
+	"loadLaunchpadCode": null,
+	"loadApplicationCode": null,
+	"appType": "C",
+	"ui5_m": true,
+	"ui5_f": false,
+	"ui5_table": false,
+	"ui5_tnt": false,
+	"ui5_uxap": false,
+	"ui5_chart": false,
+	"ui5_theme": "sap_belize",
+	"ui5_version": "",
+	"ui5_language": null,
+	"cus_theme": "",
+	"css": "",
+	"header": "",
+	"manifest": "",
+	"globalScript": "",
+	"deleted": false,
+	"libHighchart": false,
+	"libHighmap": false,
+	"publicAccess": false,
+	"ui5_bootstrap": false,
+	"apis": []
+}
